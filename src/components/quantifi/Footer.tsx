@@ -28,7 +28,7 @@ const columns: { title: string; items: { label: string; href: string }[] }[] = [
     items: [
       { label: "Portfolio Tracker", href: "/portfolio" },
       { label: "Stock Analysis", href: "/stock-analysis" },
-      { label: "Stock Screener & Alerts", href: "/watchlist" },
+      { label: "Stock Screener", href: "/screener" },
       { label: "Trading Ideas", href: "/ideas" },
       { label: "News Impact", href: "/news" },
       { label: "Dividend Tracker", href: "/ideas" },
@@ -48,7 +48,7 @@ const columns: { title: string; items: { label: string; href: string }[] }[] = [
   {
     title: "Quantifi",
     items: [
-      { label: "Plans & Pricing", href: "/" },
+      { label: "Plans & Pricing", href: "/pricing" },
       { label: "About Us", href: "/" },
       { label: "Contact Us", href: "/" },
       { label: "Help Center", href: "/" },

@@ -11,9 +11,11 @@ const links = [
   { href: "/insider-activity", label: "Insider Activity" },
   { href: "/famous-takes", label: "Famous Takes" },
   { href: "/explore", label: "Explore" },
+  { href: "/screener", label: "Screener" },
   { href: "/stock-analysis", label: "Stock Analysis" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/watchlist", label: "Watchlist" },
+  { href: "/pricing", label: "Pricing" },
 ];
 
 function BrandMark() {

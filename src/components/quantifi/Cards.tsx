@@ -353,3 +353,80 @@ export function ImpactChain({
     </div>
   );
 }
+
+// ── Score radar (pentagon) — inline SVG, no chart library ────────────────────
+
+export function ScoreRadar({
+  values,
+  labels,
+  size = 220,
+  max = 6,
+}: {
+  values: number[]; // length 5, each 0..max
+  labels: string[]; // length 5
+  size?: number;
+  max?: number;
+}) {
+  const cx = size / 2;
+  const cy = size / 2;
+  const r = size * 0.36;
+  const n = values.length;
+  const angle = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / n;
+  const point = (i: number, radius: number) => {
+    const a = angle(i);
+    return [cx + radius * Math.cos(a), cy + radius * Math.sin(a)] as const;
+  };
+  const ring = (frac: number) =>
+    values
+      .map((_, i) => point(i, r * frac).join(","))
+      .join(" ");
+  const shape = values
+    .map((v, i) => point(i, (Math.max(0, Math.min(max, v)) / max) * r).join(","))
+    .join(" ");
+
+  return (
+    <svg viewBox={`0 0 ${size} ${size}`} width="100%" height="100%" role="img" aria-label="Quantifi Score radar">
+      <defs>
+        <linearGradient id="radarFill" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#E9B872" stopOpacity="0.45" />
+          <stop offset="100%" stopColor="#4FD1C5" stopOpacity="0.30" />
+        </linearGradient>
+      </defs>
+      {[0.25, 0.5, 0.75, 1].map((f) => (
+        <polygon
+          key={f}
+          points={ring(f)}
+          fill="none"
+          stroke="rgba(255,255,255,0.08)"
+          strokeWidth="1"
+        />
+      ))}
+      {values.map((_, i) => {
+        const [x, y] = point(i, r);
+        return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="rgba(255,255,255,0.06)" strokeWidth="1" />;
+      })}
+      <polygon points={shape} fill="url(#radarFill)" stroke="#E9B872" strokeWidth="1.5" />
+      {values.map((v, i) => {
+        const [x, y] = point(i, (Math.max(0, Math.min(max, v)) / max) * r);
+        return <circle key={i} cx={x} cy={y} r="2.5" fill="#F2CD8E" />;
+      })}
+      {labels.map((label, i) => {
+        const [x, y] = point(i, r + 16);
+        return (
+          <text
+            key={label}
+            x={x}
+            y={y}
+            fill="rgba(226,232,240,0.75)"
+            fontSize="9"
+            fontWeight="600"
+            textAnchor={x < cx - 4 ? "end" : x > cx + 4 ? "start" : "middle"}
+            dominantBaseline="middle"
+          >
+            {label}
+          </text>
+        );
+      })}
+    </svg>
+  );
+}
